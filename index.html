@@ -7,30 +7,36 @@
 <body>
     <h1>Chatting</h1>
 
+
     <input type="text" id="message" placeholder="Enter message"></input>
-    <button id = "send">Send</button>
+    <button id="send">Send</button>
     <div id="allMsg"></div>
+    <script src="/socket.io/socket.io.js"></script>
 
-
-    <script src="/socket.io/socket.io.js">
-
-    </script>
     <script>
         const socket = io()
-        const send = document.getElementById("send")
-        const mes = document.getElementById("message")
-        const allMsg = document.getElementById("allMsg")
+        const send = document.getElementById("send"); 
+        const mes = document.getElementById("message"); 
+        const allMsg = document.getElementById("allMsg"); 
 
-        socket.on("message", (mess) => {
+      
+        function appendMessage(message) {
             const p = document.createElement("p");
-            p.innerText = mess
-            allMsg.append(p)
+            p.innerText = message;
+            allMsg.append(p);
+        }
+
+    
+        socket.on("message", (message) => {
+            appendMessage(message);
         })
 
+       
         send.addEventListener("click", (e) => {
-            const message = mes.value
-            console.log(message)
-            socket.emit("userMsg", message)
+          
+            const message = mes.value;
+            socket.emit("userMsg", message);
+            mes.value = "";
         })
     </script>
 
